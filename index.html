@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificate Generator</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #5624d0;
+            --secondary-color: #1c1d1f;
+            --light-color: #f7f9fa;
+            --accent-color: #f5c33b;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+            color: var(--secondary-color);
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), #6a11cb);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .header-title {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+        }
+        
+        .form-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 6px 30px rgba(0,0,0,0.08);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        /* Certificate Modal Styles */
+        .certificate-modal .modal-dialog {
+            max-width: 800px;
+        }
+        
+        .certificate {
+            width: 100%;
+            padding: 3rem;
+            background: white;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0icmdiYSgyMDQsMTk5LDIzMSwwLjA1KSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNwYXR0ZXJuKSIvPjwvc3ZnPg==');
+            position: relative;
+        }
+        
+        .platform-logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+        
+        .certificate-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: var(--secondary-color);
+            position: relative;
+            text-align: center;
+        }
+        
+        .certificate-title::after {
+            content: "";
+            position: absolute;
+            bottom: -1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: var(--primary-color);
+        }
+        
+        .certificate-text {
+            font-size: 1.25rem;
+            line-height: 1.8;
+            margin: 2.5rem 0;
+            color: #333;
+            text-align: center;
+        }
+        
+        .highlight {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .signature-area {
+            margin-top: 3rem;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .signature-line {
+            border-top: 1px solid #ddd;
+            width: 200px;
+            margin: 0.5rem 0;
+        }
+        
+        .certificate-footer {
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            color: #666;
+            text-align: center;
+        }
+        
+        .certificate-id {
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+        
+        .watermark {
+            position: absolute;
+            bottom: 2rem;
+            right: 2rem;
+            opacity: 0.05;
+            font-size: 8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        /* Table Styles */
+        .certificates-table {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 6px 30px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+        
+        .certificates-table th {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 500;
+        }
+        
+        .certificates-table td, .certificates-table th {
+            vertical-align: middle;
+            padding: 1rem;
+        }
+        
+        .action-btn {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
+        
+        /* Print-specific styles */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .certificate, .certificate * {
+                visibility: visible;
+            }
+            .certificate {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                padding: 20px;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container text-center">
+            <h1 class="header-title">Certificate Generator</h1>
+            <p class="lead">Create and manage your certificates</p>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Form Section -->
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="form-container">
+                    <form id="certificateForm">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="platform" class="form-label">Platform</label>
+                                <select class="form-select" id="platform">
+                                    <option value="Udemy">Udemy</option>
+                                    <option value="Coursera">Coursera</option>
+                                    <option value="edX">edX</option>
+                                    <option value="LinkedIn Learning">LinkedIn Learning</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="name" class="form-label">Your Name</label>
+                                <input type="text" class="form-control" id="name" placeholder="Enter your full name" required>
+                            </div>
+                            <div class="col-md-8">
+                                <label for="course" class="form-label">Course Name</label>
+                                <input type="text" class="form-control" id="course" placeholder="Enter course name" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="hours" class="form-label">Course Hours</label>
+                                <input type="number" class="form-control" id="hours" placeholder="e.g. 2.5" step="0.5" min="0.5" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="date" class="form-label">Completion Date</label>
+                                <input type="date" class="form-control" id="date" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="instructor" class="form-label">Instructor Name</label>
+                                <input type="text" class="form-control" id="instructor" placeholder="Optional">
+                            </div>
+                        </div>
+                        
+                        <div class="text-center mt-4">
+                            <button type="button" class="btn btn-primary" onclick="generateCertificate()">
+                                <i class="fas fa-certificate me-2"></i> Generate Certificate
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Certificates Table -->
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <h3 class="mb-4">Generated Certificates</h3>
+                <div class="certificates-table table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Platform</th>
+                                <th>Name</th>
+                                <th>Course Name</th>
+                                <th>Completion Date</th>
+                                <th>Instructor</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="certificatesTableBody">
+                            <!-- Certificates will be added here dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Certificate Modal -->
+    <div class="modal fade certificate-modal" id="certificateModal" tabindex="-1" aria-labelledby="certificateModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header no-print">
+                    <h5 class="modal-title" id="certificateModalLabel">Certificate Preview</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="certificateContent" class="certificate">
+                        <!-- Certificate content will be inserted here -->
+                    </div>
+                </div>
+                <div class="modal-footer no-print">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="window.print()">
+                        <i class="fas fa-print me-2"></i> Print Certificate
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Array to store generated certificates
+        let certificates = [];
+        let certificateCounter = 1;
+        const certificateModal = new bootstrap.Modal(document.getElementById('certificateModal'));
+        
+        function generateCertificate() {
+            // Get form values
+            const platform = document.getElementById('platform').value;
+            const name = document.getElementById('name').value;
+            const course = document.getElementById('course').value;
+            const hours = document.getElementById('hours').value;
+            const date = document.getElementById('date').value;
+            const instructor = document.getElementById('instructor').value || 'Instructor';
+            
+            // Validate inputs
+            if (!name || !course || !hours || !date) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            
+            // Format date
+            const formattedDate = formatDate(date);
+            
+            // Generate certificate ID
+            const certId = generateId(platform);
+            
+            // Create certificate object
+            const certificate = {
+                id: certId,
+                platform: platform,
+                name: name,
+                course: course,
+                hours: hours,
+                date: formattedDate,
+                instructor: instructor,
+                rawDate: date
+            };
+            
+            // Add to certificates array
+            certificates.push(certificate);
+            
+            // Add to the table
+            addCertificateToTable(certificate);
+            
+            // Reset form
+            document.getElementById('certificateForm').reset();
+        }
+        
+        function addCertificateToTable(cert) {
+            const tbody = document.getElementById('certificatesTableBody');
+            const row = document.createElement('tr');
+            
+            row.innerHTML = `
+                <td>${certificateCounter++}</td>
+                <td>${cert.platform}</td>
+                <td>${cert.name}</td>
+                <td>${cert.course}</td>
+                <td>${cert.date}</td>
+                <td>${cert.instructor}</td>
+                <td>
+                    <button class="btn btn-sm btn-primary action-btn" onclick="viewCertificate('${cert.id}')">
+                        <i class="fas fa-eye me-1"></i> View
+                    </button>
+                </td>
+            `;
+            
+            tbody.appendChild(row);
+        }
+        
+        function formatDate(dateString) {
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', options);
+        }
+        
+        function generateId(platform) {
+            const prefix = platform.substring(0, 2).toUpperCase();
+            const year = new Date().getFullYear();
+            const randomNum = Math.floor(100000 + Math.random() * 900000);
+            return `${prefix}-${year}-${randomNum}`;
+        }
+        
+        function viewCertificate(certId) {
+            // Find the certificate in the array
+            const cert = certificates.find(c => c.id === certId);
+            if (!cert) return;
+            
+            // Generate the certificate HTML
+            const certificateHTML = `
+                <div class="watermark">${cert.platform.toUpperCase()}</div>
+                <div class="platform-logo">${cert.platform}</div>
+                <div class="certificate-title">Certificate of Completion</div>
+                <div class="certificate-text">
+                    This is to certify that <span class="highlight">${cert.name}</span><br>
+                    has successfully completed <span class="highlight">${cert.hours}</span> hours of<br>
+                    <span class="highlight">${cert.course}</span><br>
+                    on <span class="highlight">${cert.date}</span>.
+                </div>
+                
+                <div class="signature-area">
+                    <div class="text-center">
+                        <div class="signature-line"></div>
+                        <div class="mt-2">${cert.instructor}</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="signature-line"></div>
+                        <div class="mt-2">${cert.platform} Representative</div>
+                    </div>
+                </div>
+                
+                <div class="certificate-footer">
+                    Certificate ID: <span class="certificate-id">${cert.id}</span>
+                </div>
+            `;
+            
+            // Insert the HTML into the modal
+            document.getElementById('certificateContent').innerHTML = certificateHTML;
+            
+            // Show the modal
+            certificateModal.show();
+        }
+    </script>
+</body>
+</html>

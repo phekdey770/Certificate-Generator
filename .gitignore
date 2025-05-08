@@ -1,0 +1,192 @@
+# ============================
+# OS-specific files
+# ============================
+.DS_Store
+Thumbs.db
+ehthumbs.db
+*.swp
+*.swo
+*.swn
+*.bak
+*.old
+*.tmp
+
+# ============================
+# Logs & Debugging
+# ============================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+*.log.[0-9]
+*.gz
+
+# ============================
+# Environment Variables & Secrets
+# ============================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.pem
+*.crt
+*.key
+*.pfx
+*.cert
+
+# ============================
+# Dependency directories
+# ============================
+node_modules/
+vendor/
+target/
+build/
+dist/
+out/
+.next/
+.vercel/
+.netlify/
+storage/
+public/storage/
+public/uploads/
+
+# ============================
+# Java, Maven, Gradle (Spring Boot)
+# ============================
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+*.war
+*.ear
+*.jar
+*.class
+
+# Gradle
+.gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+gradle-app.setting
+.gradle-cache/
+.gradle-local/
+gradle-wrapper.jar
+
+# ============================
+# Spring Tool Suite (STS)
+# ============================
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache
+
+# ============================
+# IntelliJ IDEA
+# ============================
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# ============================
+# Eclipse
+# ============================
+.metadata/
+bin/
+*.class
+*.war
+*.ear
+*.jar
+.recommenders
+.eclipse/
+.settings/
+
+# ============================
+# NetBeans
+# ============================
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# ============================
+# VS Code
+# ============================
+.vscode/
+
+# ============================
+# TypeScript
+# ============================
+*.tsbuildinfo
+
+# ============================
+# Frontend & Webpack Build Output
+# ============================
+.next/
+out/
+.vercel/
+.netlify/
+coverage/
+.sass-cache/
+.cache/
+bower_components/
+jspm_packages/
+__pycache__/
+
+# ============================
+# Large files (Executables, Media, Databases)
+# ============================
+*.exe
+*.dll
+*.so
+*.dylib
+*.zip
+*.tar
+*.tar.gz
+*.rar
+*.7z
+*.iso
+*.apk
+*.bin
+*.o
+*.a
+*.out
+*.pyc
+*.pyo
+
+# Large Media Files
+*.mp4
+*.mkv
+*.avi
+*.mov
+*.flv
+*.mp3
+*.wav
+*.flac
+
+# Database & Backups
+*.db
+*.sqlite
+*.sql
+*.bak
+*.backup
+*.dump
+*.tar.gz
+
+# ============================
+# CI/CD & Deployment
+# ============================
+.circleci/
+.github/
+.gitlab-ci.yml
+.Dockerfile
+docker-compose.yml
+docker/
